@@ -1,12 +1,11 @@
 import tensorflow as tf
-from music21 import converter, note, chord
+from music21 import converter, note, chord, instrument
 import numpy as np
 import glob
-import pickle
 
 def load_midi_files():
-    notes=[]
-    for file in glob.glob("Midi_files/*.mid"):
+    notes = []
+    for file in glob.glob("midi_files/*.mid"):
         midi = converter.parse(file)
         notes_to_parse = midi.flat.notes
         for element in notes_to_parse:
@@ -34,7 +33,6 @@ def prepare_sequences(notes, sequence_length):
     
     return X, y
 
-
 def create_model(sequence_length, n_vocab):
     model = tf.keras.Sequential([
         tf.keras.layers.LSTM(256, input_shape=(sequence_length, 1), return_sequences=True),
@@ -49,16 +47,7 @@ def create_model(sequence_length, n_vocab):
     model.compile(loss='categorical_crossentropy', optimizer='adam')
     return model
 
-
-def train_model(model, X, y, epochs=200, batch_size=64):
+def train_model(model, X, y, epochs=20, batch_size=500):
     model.fit(X, y, epochs=epochs, batch_size=batch_size)
-    model.save("music_model.keras")
+    model.save("music_model.h5")
 
-sequence_length = 100
-notes = load_midi_files()
-X, y = prepare_sequences(notes, sequence_length)
-model = create_model(sequence_length, len(set(notes)))
-train_model(model, X, y)
-
-with open("notes.pkl", "wb") as file:
-    pickle.dump(notes, file)
