@@ -14,3 +14,5 @@ jedoch reduziert es auch die Menge an Kontext und die Ausdruckskraft des Modells
 - https://www.linkedin.com/advice/3/what-optimal-sequence-length-rnn-skills-machine-learning-nu4gc 
 Es handelt sich um die länge des Kontexts die in Betracht gezogen werden, wärend eines Trainings</p>
 
+Nach einem Durchgang mit vielen Durcheinander Gemischten Midi files ist mir aufgefallen das wohl akkorde mehr aufgenommen wurden und mehr eine Art durchgehender Rhytmus vorhanden ist, jedoch fehlt mir eine einheitliche Musikrichtung, dementsprechend, ist das nächste Ziel doch eher einen Interpreten, oder eine Musik richtung zu generieren.
+Außerdem, muss ich die Lieder rausfiltern, die nur den Bass eines Liedes oder rein die Rythmic und nicht die Melodie darstellen.

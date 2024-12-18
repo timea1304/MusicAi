@@ -20,6 +20,7 @@ class MIDIProcessor:
                     self.notes.append('.'.join(str(n) for n in element.normalOrder))
         return self.notes
     
+    @staticmethod
     def prepare_sequences(notes, sequence_length):
         pitchnames = sorted(set(notes))
         note_to_int = dict((note, number) for number, note in enumerate(pitchnames))

@@ -2,10 +2,12 @@
 import tensorflow as tf
 
 class MusicGeneratorModel:
-    def __init__(self, sequence_length, n_vocab):
+    def __init__(self, sequence_length, n_vocab, epochs, batch_size):
         self.sequence_length = sequence_length
         self.n_vocab = n_vocab
         self.model = self.create_model()
+        self.epochs = epochs
+        self.batch_size = batch_size
     # KI Modell erstellen (LSTM-Model)
     def create_model(self):
         model = tf.keras.Sequential([
@@ -24,8 +26,8 @@ class MusicGeneratorModel:
  
 
     # KI Model trainieren
-    def train(self, X, y, epochs=100, batch_size=64):
-        self.model.fit(X, y, epochs=epochs, batch_size=batch_size)
+    def train(self, X, y):
+        self.model.fit(X, y, epochs = self.epochs, batch_size = self.batch_size)
         self.model.save("music_model.h5")
 
     # trainiertes KI model laden

@@ -16,7 +16,7 @@ note_to_int = {note: num for num, note in enumerate(pitchnames)}
 int_to_note = {num: note for num, note in enumerate(pitchnames)}
 
 # Länge der Startsequenz und generierten Noten
-sequence_length = 100
+sequence_length = 20
 generated_notes_count = 500  # Anzahl generierten Noten, in der End Midi file
 
 # Zufällige Startsequence innerhalb der Trainierten Noten wählen
@@ -38,7 +38,7 @@ for i in range(generated_notes_count):
     pattern = pattern[1:len(pattern)]
 
 # Die Noten in eine MIDI-Datei umwandeln
-def create_midi_from_notes(notes, output_file="generated_music4.mid"):
+def create_midi_from_notes(notes, output_file="generated_music5.mid"):
     midi_stream = stream.Stream()
     
     for element in notes:
