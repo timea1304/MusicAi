@@ -9,18 +9,21 @@ class MIDIProcessor:
     def __init__(self, midi_folder):
         self.midi_folder = midi_folder
         self.notes = []
-    #MIDI files laden aus dem Datei ordner un noten/ Akkorde herrausfiltern
+        
     def load_midi_files(self):
         for file in glob.glob(self.midi_folder + "/*.mid"):
-            midi = converter.parse(file)
-            notes_to_parse = midi.flat.notes
-            for element in notes_to_parse:
-                if isinstance(element, note.Note):
-                    self.notes.append(str(element.pitch))
-                elif isinstance(element, chord.Chord):
-                    self.notes.append('.'.join(str(n) for n in element.normalOrder))
+            try:
+                midi = converter.parse(file)
+                notes_to_parse = midi.flatten().notes  # .flat durch .flatten() ersetzt
+                for element in notes_to_parse:
+                    if isinstance(element, note.Note):
+                        self.notes.append(str(element.pitch))
+                    elif isinstance(element, chord.Chord):
+                        self.notes.append('.'.join(str(n) for n in element.normalOrder))
+            except Exception as e:
+                print(f"Fehler beim Verarbeiten der Datei {file}: {e}")
         return self.notes
-    
+
     @staticmethod
     def prepare_sequences(notes, sequence_length):
         pitchnames = sorted(set(notes))
@@ -44,3 +47,7 @@ class MIDIProcessor:
     def save_notes(self, output_file="notes.pkl"):
         with open(output_file, "wb") as file:
             pickle.dump(self.notes, file)
+    
+    def load_notes(self, input_file="notes.pkl"):
+        with open(input_file, "rb") as file:
+            self.notes = pickle.load(file)

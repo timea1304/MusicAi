@@ -38,3 +38,5 @@ https://docs.python.org/3/library/pickle.html <br>
 https://numpy.org/ <br>
 https://www.music21.org/music21docs/ <br>
 https://www.tensorflow.org/api_docs/python/tf/keras/layers/LSTM
+
+<p> Nach Einbau des Feedbacksystems kam es zur keiner Besserung der Generierung. Also hab ich eine Weitere Neuronale Schicht hinzugefügt, damit das Model die komplexeren Muster von Hardstyle/Hardcore lernen kann.

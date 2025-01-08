@@ -6,12 +6,12 @@ import pickle
 import csv
 
 
-sequence_length = 100
+sequence_length = 128
 generated_notes_count = 100
-epochs = 100
+epochs = 20
 batch_size = 128
-midi_folder = "MusicAiModel\Midi_files\Hardstyle"
-aiModel = "hardstyle_model.keras"
+midi_folder = "MusicAiModel\\Midi_files\\Hardstyle"
+aiModel = "hardstyle_model2.keras"
 feedback_file = "bewertung.csv"
 
 
@@ -83,7 +83,7 @@ if os.path.exists(aiModel):
     model = model_handler.load_model(filepath=aiModel)
 else:
     print("Trainiere ein neues Modell.")
-    model_handler.train(X, y)
+    model_handler.train(X, y, epochs)
     model = model_handler.model
 
 
