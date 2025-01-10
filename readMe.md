@@ -38,5 +38,11 @@ https://docs.python.org/3/library/pickle.html <br>
 https://numpy.org/ <br>
 https://www.music21.org/music21docs/ <br>
 https://www.tensorflow.org/api_docs/python/tf/keras/layers/LSTM
+https://www.tensorflow.org/tutorials/audio/music_generation
 
 <p> Nach Einbau des Feedbacksystems kam es zur keiner Besserung der Generierung. Also hab ich eine Weitere Neuronale Schicht hinzugefügt, damit das Model die komplexeren Muster von Hardstyle/Hardcore lernen kann.
+Nach generierung der 7. Version kam es wieder zu einem Fail.<br> Vermütung war das es ggf auch am Instrument und an der Geschwindigkeit der Generierten Midi file handelt.
+<br> Nach verwendung eines Online Tools https://signal.vercel.app/edit und einwenig bearbeitung viel auf das es wirklich daran lag.
+
+- Tempo einbauen
+- Polysynth o.ä als instrument einbauen.

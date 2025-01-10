@@ -7,8 +7,8 @@ import csv
 
 
 sequence_length = 128
-generated_notes_count = 100
-epochs = 20
+generated_notes_count = 200
+epochs = 50
 batch_size = 128
 midi_folder = "MusicAiModel\\Midi_files\\Hardstyle"
 aiModel = "hardstyle_model2.keras"
@@ -22,7 +22,6 @@ def get_new_filename(base_name, folder="generated_Midi"):
     return os.path.join(folder, f"{base_name}_{version}.midi")
 
 def music_rating(filename, feedback_file):
-    """Funktion zur Bewertung generierter Musik."""
     try:
         rating = int(input("Bewerten: (1 = schlecht|5 = sehr gut): "))
         if 1 <= rating <= 5:
@@ -42,7 +41,7 @@ def train_with_rating(actual_notes, feedback_file, sequence_length):
             reader = csv.reader(file)
             feedback = list(reader)
         for row in feedback:
-            if len(row) != 2:  # Überprüfe, ob genau zwei Werte vorhanden sind
+            if len(row) != 2: 
                 print(f"Ungültige Zeile übersprungen: {row}")
                 continue
             filename, rating = row

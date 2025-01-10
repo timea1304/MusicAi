@@ -3,6 +3,8 @@ from music21 import converter, note, chord
 import numpy as np
 import tensorflow as tf
 import pickle
+import pretty_midi
+
 
 
 class MIDIProcessor:
@@ -14,7 +16,7 @@ class MIDIProcessor:
         for file in glob.glob(self.midi_folder + "/*.mid"):
             try:
                 midi = converter.parse(file)
-                notes_to_parse = midi.flatten().notes  # .flat durch .flatten() ersetzt
+                notes_to_parse = midi.flatten().notes  
                 for element in notes_to_parse:
                     if isinstance(element, note.Note):
                         self.notes.append(str(element.pitch))
