@@ -1,7 +1,7 @@
 import pickle
-from music21 import instrument, note, chord, stream, tempo
+from music21 import instrument, note, chord, stream, tempo, converter
 import numpy as np
-import random
+#import random
 
 class MusicGenerator:
     def __init__(self, sequence_length, generated_notes_count, model):
@@ -13,81 +13,102 @@ class MusicGenerator:
         self.pitchnames = []
         self.note_to_int = {}
         self.int_to_note = {}
+        self.pauses = []
+        self.durations = []
         self.load_notes()
+        
 
     #noten aus notes.pkl laden um sie zu verarbeiten
     def load_notes(self):
-        
         try:
             with open("notes.pkl", "rb") as file:
                 self.notes = pickle.load(file)
-            self.pitchnames = sorted(set(self.notes))
+
+        # Extrahiere nur die 'pitch'-Werte für pitchnames
+            self.pitchnames = sorted(set(note["pitch"] for note in self.notes))
             self.note_to_int = {note: num for num, note in enumerate(self.pitchnames)}
             self.int_to_note = {num: note for num, note in enumerate(self.pitchnames)}
+            print("Notes loaded:", self.notes[:5])
+
         except FileNotFoundError:
             print("Fehler: 'notes.pkl' wurde nicht gefunden.")
             raise
+
     # noten generieren
     def generate_notes(self):
         start = np.random.randint(0, len(self.notes) - self.sequence_length)
-        pattern = [self.note_to_int[note] for note in self.notes[start:start + self.sequence_length]]
+        pattern = self.notes[start:start + self.sequence_length]  # Pattern enthält vollständige Noten-Daten
+
 
         for i in range(self.generated_notes_count):
-            prediction_input = np.reshape(pattern, (1, self.sequence_length, 1))
-            prediction_input = prediction_input / float(len(self.pitchnames))
-            
+            #pitches = [self.note_to_int[note["pitch"]] for note in pattern]
+            #durations = [note["duration"] for note in pattern]
+            #pauses = [note["pause"] for note in pattern]
+
+           # prediction_input = np.array([pitches, durations, pauses]).T
+            prediction_input = np.array([
+            [self.note_to_int[note["pitch"]] / float(len(self.pitchnames)),
+            float(note["duration"]),
+            float(note["pause"])]
+            for note in pattern
+            ])
+            prediction_input = np.reshape(prediction_input, (1, self.sequence_length, 3))
+            #prediction_input[:, :, 0] /= float(len(self.pitchnames)) 
+        # Vohersage
             prediction = self.model.predict(prediction_input, verbose=0)
-            index = np.random.choice(len(prediction[0]), p=prediction[0])
-            result = self.int_to_note[index]
+            pitch_index = np.argmax(prediction[0][0])
+            predicted_duration = prediction[1][0][0]
+            predicted_pause = prediction[2][0][0]
+
+
+            result = {
+                "pitch": self.int_to_note[pitch_index],
+                "duration": max(0.25, min(predicted_duration, 2.0)),
+                "pause": max(0.0, min(predicted_pause, 1.0))
+            }
             self.generated_notes.append(result)
             
-            pattern.append(index)
-            pattern = pattern[1:len(pattern)]
+            pattern.append(result)
+            pattern = pattern[1:]
 
-    def create_midi_from_notes(self, output_file="generated_music.midi", bpm = 160):
-        midi_stream1 = stream.Part() # melodie
-        midi_stream2 = stream.Part() # beat
-     
+    def create_midi_from_notes(self, output_file="generated_music.midi", bpm=160):
+     midi_stream1 = stream.Part()  # Melodie
+     midi_stream2 = stream.Part()  # Beat
+ 
+     # Tempo und Instrumente hinzufügen
+     tempo_bpm = tempo.MetronomeMark(number=bpm)
+     midi_stream1.append(tempo_bpm)
+     midi_stream2.append(tempo_bpm)
+ 
+     midi_stream1.append(instrument.Piano())
+     midi_stream2.append(instrument.Percussion())
+ 
+     for element in self.generated_notes:
+         # Pause generieren
+         if element["pause"] > 0:
+             rest = note.Rest(quarterLength=element["pause"])
+             midi_stream2.append(rest)
+             continue
+ 
+         # Akkorde
+         if '.' in element["pitch"] or element["pitch"].isdigit():
+             chord_notes = [note.Note(int(n)) for n in element["pitch"].split('.')]
+             new_chord = chord.Chord(chord_notes)
+             new_chord.quarterLength = element["duration"]
+             midi_stream1.append(new_chord)
+         else:  # Einzelnote
+             new_note = note.Note(element["pitch"])
+             new_note.quarterLength = element["duration"]
+             if element["duration"] < 0.5:
+                 midi_stream2.append(new_note)
+             else:
+                 midi_stream1.append(new_note)
+ 
+     # MIDI speichern
+     song = stream.Score()
+     song.insert(0, midi_stream1)
+     song.insert(0, midi_stream2)
+     song.write("midi", fp=output_file)
 
-        tempo_bpm = tempo.MetronomeMark(number=bpm)
-        midi_stream1.append(tempo_bpm)
-        midi_stream2.append(tempo_bpm)
-      
-
-        midi_stream1.append(instrument.Piano())
-        midi_stream2.append(instrument.Percussion())
-       
-
-        for element in self.generated_notes:
-            if random.random() < 0.1:  # 10% Wahrscheinlichkeit für eine Pause
-                rest = note.Rest(quarterLength=0.5)  # Dauer der Pause
-                random.choice([midi_stream1, midi_stream2]).append(rest)
-                continue
-
-            if '.' in element or element.isdigit():
-                chord_notes = [note.Note(int(n)) for n in element.split('.')]
-               # for chord_note in chord_notes:
-                #    chord_note.storedInstrument = instrument.Sampler()
-                new_chord = chord.Chord(chord_notes)
-                new_chord.quarterLength = random.choice([0.25,0.5,1.0])
-                midi_stream1.append(new_chord)
-                #midi_stream1.append(new_chord)
-            else: # Wenn es sich um eine Note und nicht um ein Akkord handelt
-                new_note = note.Note(element)
-                new_note.quarterLength = random.choice([0.25,0.5,1.0])
-                if new_note.quarterLength < 0.5:
-                   midi_stream2.append(new_note)
-                else:
-                   midi_stream1.append(new_note)
-               # new_note.storedInstrument = instrument.Sampler()
-                #midi_stream1.append(new_note)
-                #random.choice([midi_stream1,midi_stream2]).append(new_note)
-
-       
-        song = stream.Score()
-        song.insert(0,midi_stream1)
-        song.insert(0,midi_stream2)
-        #fp = file path
-        song.write("midi", fp=output_file)    
 
 

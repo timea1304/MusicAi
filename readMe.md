@@ -38,7 +38,19 @@ https://docs.python.org/3/library/pickle.html <br>
 https://numpy.org/ <br>
 https://www.music21.org/music21docs/ <br>
 https://www.tensorflow.org/api_docs/python/tf/keras/layers/LSTM
-https://www.tensorflow.org/tutorials/audio/music_generation
+https://www.tensorflow.org/tutorials/audio/music_generation <br>
+https://de.eitca.org/artificial-intelligence/eitc-ai-tff-tensorflow-fundamentals/natural-language-processing-with-tensorflow/long-short-term-memory-for-nlp/examination-review-long-short-term-memory-for-nlp/how-can-we-implement-lstm-in-tensorflow-to-analyze-a-sentence-both-forwards-and-backwards/<br>
+https://developers.google.com/machine-learning/crash-course?hl=de <br>
+https://keras.io/guides/sequential_model/ <br>
+https://developers.google.com/machine-learning/intro-to-ml/supervised?hl=de <br>
+https://www.rileynwong.com/blog/2019/2/25/generating-music-with-an-lstm-neural-network <br>
+https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5 <br>
+
+GoogleSuche:
+- Midi dateien
+- Velocity
+- duration bei Midi dateien
+- Pitch bei Midi dateien
 
 <p> Nach Einbau des Feedbacksystems kam es zur keiner Besserung der Generierung. Also hab ich eine Weitere Neuronale Schicht hinzugefügt, damit das Model die komplexeren Muster von Hardstyle/Hardcore lernen kann.
 Nach generierung der 7. Version kam es wieder zu einem Fail.<br> Vermütung war das es ggf auch am Instrument und an der Geschwindigkeit der Generierten Midi file handelt.

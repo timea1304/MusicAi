@@ -4,10 +4,10 @@ import numpy as np
 import pickle
 
 # Laden des trainierten Modells und der Noten
-model = tf.keras.models.load_model("music_model.keras")
+model = tf.keras.models.load_model("hardstyle_model2.keras")
 
 # Startsequenz laden und vorbereiten
-with open("MusicAiModel/notes.pkl", "rb") as file:  # Noten werden hier gespeichert, wenn ein Training des modells statt findet
+with open("notes.pkl", "rb") as file:  # Noten werden hier gespeichert, wenn ein Training des modells statt findet
     notes = pickle.load(file)
 
 # umwandeln von noten to int und int to note
@@ -38,7 +38,7 @@ for i in range(generated_notes_count):
     pattern = pattern[1:len(pattern)]
 
 # Die Noten in eine MIDI-Datei umwandeln
-def create_midi_from_notes(notes, output_file="generated_music7.mid"):
+def create_midi_from_notes(notes, output_file="g_music1.mid"):
     midi_stream = stream.Stream()
     
     for element in notes:

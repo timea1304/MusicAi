@@ -8,10 +8,10 @@ import csv
 
 sequence_length = 128
 generated_notes_count = 200
-epochs = 50
+epochs = 5
 batch_size = 128
 midi_folder = "MusicAiModel\\Midi_files\\Hardstyle"
-aiModel = "hardstyle_model2.keras"
+aiModel = "hardstyle_model5.keras"
 feedback_file = "bewertung.csv"
 
 
@@ -72,11 +72,11 @@ if len(notes) < sequence_length:
 processor.save_notes()
 
 # Sequenzen vorbereiten
-n_vocab = len(set(notes))
+n_vocab = len(set(note["pitch"] for note in notes))
 X, y = processor.prepare_sequences(notes, sequence_length)
 
 
-model_handler = MusicGeneratorModel(sequence_length, n_vocab,batch_size, aiModel )
+model_handler = MusicGeneratorModel(sequence_length, n_vocab, batch_size, aiModel)
 if os.path.exists(aiModel):
     print(f"Lade vorhandenes Modell: {aiModel}")
     model = model_handler.load_model(filepath=aiModel)
@@ -86,7 +86,7 @@ else:
     model = model_handler.model
 
 
-filename = get_new_filename("genHardstyle_music")
+filename = get_new_filename("genHardstyle_music_01_")
 generator = MusicGenerator(sequence_length, generated_notes_count, model)
 generator.generate_notes()
 generator.create_midi_from_notes(filename)
@@ -99,5 +99,5 @@ if input("Weitertrainieren? (y/n): ").lower() == 'y':
     model_handler.train(X, y, epochs=additional_epochs)
 
 
-print(set(notes))
-print(len(notes))
+#print(set(note["pitch"] for note in notes))
+#print(len(notes))

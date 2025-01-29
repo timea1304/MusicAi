@@ -10,22 +10,69 @@ class MusicGeneratorModel:
 
     # KI Modell erstellen (LSTM-Model)
     def create_model(self):
-        model = tf.keras.Sequential([
-            tf.keras.layers.LSTM(512, input_shape=(self.sequence_length, 1), return_sequences=True),
+        input_layer = tf.keras.layers.Input(shape=(self.sequence_length,3))
+
+        lstm_layer = tf.keras.layers.LSTM(512, return_sequences=True)(input_layer)
+        lstm_layer = tf.keras.layers.Dropout(0.3)(lstm_layer)
+
+        lstm_layer = tf.keras.layers.LSTM(512, return_sequences=True)(lstm_layer)
+        lstm_layer = tf.keras.layers.Dropout(0.3)(lstm_layer)
+        
+        lstm_layer = tf.keras.layers.LSTM(256, return_sequences=False)(lstm_layer)
+        lstm_layer = tf.keras.layers.Dropout(0.3)(lstm_layer)
+        
+        # Separate Dense-Schichten für jede Ausgabe
+        pitch_output = tf.keras.layers.Dense(self.n_vocab, activation='softmax', name="pitch_output")(lstm_layer)
+        duration_output = tf.keras.layers.Dense(1, activation='relu', name="duration_output")(lstm_layer)
+        pause_output = tf.keras.layers.Dense(1, activation='relu', name="pause_output")(lstm_layer)
+        
+        """model = tf.keras.Sequential([
+            # LSTM-Ebene für Sequenzverarbeitung (Eingabe: Pitches, Durations, Pauses)
+            tf.keras.layers.LSTM(512, input_shape=(self.sequence_length, 3), return_sequences=True),
             tf.keras.layers.Dropout(0.3),
+            
             tf.keras.layers.LSTM(512, return_sequences=True),
             tf.keras.layers.Dropout(0.3),
+            
             tf.keras.layers.LSTM(256, return_sequences=False),
             tf.keras.layers.Dropout(0.3),
+            
+            # Dense-Layer für komplexe Feature-Verarbeitung
             tf.keras.layers.Dense(512, activation='relu'),
             tf.keras.layers.Dense(256, activation='relu'),
+            
+            # Ausgabeschicht (Wahrscheinlichkeit für jede mögliche Note)
             tf.keras.layers.Dense(self.n_vocab, activation='softmax')
-        ])
+        ])"""
+         # Modell mit mehreren Ausgaben
+        model = tf.keras.Model(inputs=input_layer, outputs=[pitch_output, duration_output, pause_output])
+        # Modell kompilieren
+        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
         model.compile(
-            loss='categorical_crossentropy',
-            optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
-            metrics=['accuracy']
+            optimizer=optimizer,
+            loss={
+                "pitch_output": "sparse_categorical_crossentropy",
+                "duration_output": "mse",
+                "pause_output": "mse"
+            },
+            metrics={
+                "pitch_output": ["accuracy"],
+                "duration_output": ["mae"],
+                "pause_output": ["mae"]
+            }
         )
+
+                # Modell kompilieren
+        ''' model.compile(
+                    optimizer = optimizer,
+                    loss={
+                        "pitch_output": "categorical_crossentropy",
+                        "duration_output": "mse",
+                        "pause_output": "mse"
+                    },
+                    metrics={"pitch_output": "accuracy"}
+                )
+'''
         return model
 
     # KI Model trainieren
