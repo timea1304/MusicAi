@@ -45,6 +45,11 @@ https://keras.io/guides/sequential_model/ <br>
 https://developers.google.com/machine-learning/intro-to-ml/supervised?hl=de <br>
 https://www.rileynwong.com/blog/2019/2/25/generating-music-with-an-lstm-neural-network <br>
 https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5 <br>
+https://github.com/cobanov/python-yaml-guide <br>
+https://www.ionos.de/digitalguide/websites/web-entwicklung/python-string-to-list/ <br>
+https://docs.python.org/3/library/ast.html <br>
+
+
 
 GoogleSuche:
 - Midi dateien

@@ -3,7 +3,6 @@ from midi_processor import MidiProcessor
 from model import MusicModelAI
 from music_generator import MusicGenerator
 from helper_class import HelperClass
-from tensorflow.keras.utils import to_categorical
 #import csv
 #import pickle
 
@@ -48,9 +47,9 @@ if len(notes) < sequence_length:
 #processor.save_notes()
 print("Trainingsdaten vorbereiten....")
 train_data = processor.prepare_data(notes)
-#train_X = train_data[:,:-1,:]
-#train_Y_raw = train_data[:,-1,:]
-#train_Y = to_categorical(train_Y_raw, num_classes = n_vocab)
+train_X = train_data[:,:-1,:]
+train_Y_raw = train_data[:,-1,:]
+train_Y = to_categorical(train_Y_raw, num_classes = n_vocab)
 
 print("Neues Model oder Modell laden")
 model_handler = MusicModelAI(epochs,batch_size,sequence_length,aiModel,n_vocab)
@@ -61,8 +60,8 @@ if os.path.exists(aiModel):
     model = model_handler.load_model(filepath=aiModel)
 else:
     print("Trainiere ein neues Modell.")
-    #model_handler.model.fit(train_X,train_Y,epochs = epochs, batch_size = batch_size)
-    model_handler.model.fit(epochs = epochs, batch_size = batch_size)
+    model_handler.model.fit(train_X,train_Y,epochs = epochs, batch_size = batch_size)
+    #model_handler.model.fit(epochs = epochs, batch_size = batch_size)
     model_handler.save_model()
 
 print("Generiere ein Lied...")

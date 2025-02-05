@@ -1,0 +1,15 @@
+training:
+  csv_file: "MusicAIModel3\hardstyle_data.csv"
+  epochs: 20
+  batch_size: 128
+  generated_notes_count: 200
+  sequence_length: 128
+
+generating:
+  generated_midi_folder: "generated_Midi"
+  base_name: "hardstyleV3_"
+  midi_folder: "MusicAiModel\Midi_files\Hardstyle"
+
+model:
+  save_path: "model_hardstyleV3.keras"
+  load_path: "model_hardstyleV3.keras"
