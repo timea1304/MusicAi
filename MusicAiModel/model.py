@@ -21,7 +21,7 @@ class MusicGeneratorModel:
         lstm_layer = tf.keras.layers.LSTM(256, return_sequences=False)(lstm_layer)
         lstm_layer = tf.keras.layers.Dropout(0.3)(lstm_layer)
         
-        # Separate Dense-Schichten für jede Ausgabe
+        
         pitch_output = tf.keras.layers.Dense(self.n_vocab, activation='softmax', name="pitch_output")(lstm_layer)
         duration_output = tf.keras.layers.Dense(1, activation='relu', name="duration_output")(lstm_layer)
         pause_output = tf.keras.layers.Dense(1, activation='relu', name="pause_output")(lstm_layer)

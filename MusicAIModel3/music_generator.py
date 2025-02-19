@@ -34,7 +34,7 @@ class MusicGenerator:
         except FileNotFoundError:
             print("Fehler: 'notes.pkl' wurde nicht gefunden.")
             raise
-
+    """Check removed output file:"""
     # noten generieren
     def generate_notes(self):
         start = np.random.randint(0, len(self.notes) - self.sequence_length)
@@ -72,7 +72,7 @@ class MusicGenerator:
             pattern.append(result)
             pattern = pattern[1:]
 
-    def create_midi_from_notes(self, output_file="generated_music.midi"):
+    def create_midi_from_notes(self):
      midi_stream1 = stream.Part()  # Melodie
      midi_stream2 = stream.Part()  # Beat
  
@@ -92,7 +92,7 @@ class MusicGenerator:
              continue
  
          # Akkorde
-         if '.' in element["pitch"] or element["pitch"].isdigit():
+         if isinstance(element["pitch"], str) and ('.' in element["pitch"] or element["pitch"].isdigit()):
              chord_notes = [note.Note(int(n)) for n in element["pitch"].split('.')]
              new_chord = chord.Chord(chord_notes)
              new_chord.quarterLength = element["duration"]

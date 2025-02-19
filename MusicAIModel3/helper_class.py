@@ -1,11 +1,8 @@
 import os
-import csv
-import pickle
 from mido import MidiFile,MidiTrack, Message
 
 class HelperClass:
     def __init__(self, base_name, midi_folder):
-       # self.feedback_file = feedback_file
         self.base_name = base_name
         self.midi_folder = midi_folder
 

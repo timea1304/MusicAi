@@ -48,6 +48,14 @@ https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network
 https://github.com/cobanov/python-yaml-guide <br>
 https://www.ionos.de/digitalguide/websites/web-entwicklung/python-string-to-list/ <br>
 https://docs.python.org/3/library/ast.html <br>
+https://hellocoding.de/blog/coding-language/python/yaml<br>
+https://nerd-corner.com/de/tensorflow-gpu-aktivieren-unter-windows/#google_vignette <br>
+https://david-exiga.medium.com/music-generation-using-lstm-neural-networks-44f6780a4c5 <br>
+https://github.com/Skuldur/Classical-Piano-Composer/blob/master/predict.py <br>
+https://www.geeksforgeeks.org/music-generation-using-rnn/<br>
+https://blog.paperspace.com/music-generation-with-lstms/ <br>
+https://arturorey.medium.com/how-to-generate-music-using-machine-learning-72360ba4a085 <br>
+
 
 
 
