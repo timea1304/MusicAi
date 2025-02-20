@@ -41,9 +41,9 @@ class AIModel:
         return model
     
     # KI Model trainieren
-    def train(self, X, y):
+    def train(self, X, y, epochs, batch_size):
         """Trainiert das Modell"""
-        self.model.fit(X, y, epochs=self.epochs, batch_size=self.batch_size)
+        self.model.fit(X, y, epochs=epochs, batch_size=batch_size)
         self.model.save(self.model_path)
 
     # trainiertes KI Model laden

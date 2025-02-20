@@ -73,7 +73,12 @@ aiModel = AIModel(
 )
 
 #Training (falls noch nicht trainiert)
-aiModel.train(X, y)
+aiModel.train(
+    X,
+    y,
+    epochs = config['training']['epochs'],
+    batch_size= config['training']['batch_size']
+)
 
 music_generator = MusicGenerator(
     sequence_length = config['training']['sequence_length'],

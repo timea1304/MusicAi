@@ -12,7 +12,7 @@ class MidiProcessor:
 
     def load_data(self):
         df = pd.read_csv(self.csv_file)
-        notes =[]
+        notes =[] #liste
         for _, row in df.iterrows():
             try:
                 pitch = ast.literal_eval(row["Noten (MIDI)"])
