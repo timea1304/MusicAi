@@ -71,7 +71,7 @@ aiModel = AIModel(
     epochs=config['training']['epochs'],
     model_path= config['model']['model_path']
 )
-
+print("Model traininieren...")
 #Training (falls noch nicht trainiert)
 aiModel.train(
     X,
