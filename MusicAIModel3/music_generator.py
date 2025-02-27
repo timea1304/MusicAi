@@ -72,44 +72,41 @@ class MusicGenerator:
             pattern.append(result)
             pattern = pattern[1:]
 
-    def create_midi_from_notes(self):
-     midi_stream1 = stream.Part()  # Melodie
-     midi_stream2 = stream.Part()  # Beat
- 
-     # Tempo und Instrumente hinzufügen
-     tempo_bpm = tempo.MetronomeMark(number= self.bpm)
-     midi_stream1.append(tempo_bpm)
-     midi_stream2.append(tempo_bpm)
- 
-     midi_stream1.append(instrument.Piano())
-     midi_stream2.append(instrument.Percussion())
- 
-     for element in self.generated_notes:
-         # Pause generieren
-         if element["pause"] > 0:
-             rest = note.Rest(quarterLength=element["pause"])
-             midi_stream2.append(rest)
-             continue
- 
-         # Akkorde
-         if isinstance(element["pitch"], str) and ('.' in element["pitch"] or element["pitch"].isdigit()):
-             chord_notes = [note.Note(int(n)) for n in element["pitch"].split('.')]
-             new_chord = chord.Chord(chord_notes)
-             new_chord.quarterLength = element["duration"]
-             midi_stream1.append(new_chord)
-         else:  # Einzelnote
-             new_note = note.Note(element["pitch"])
-             new_note.quarterLength = element["duration"]
-             if element["duration"] < 0.5:
-                 midi_stream2.append(new_note)
-             else:
-                 midi_stream1.append(new_note)
- 
-     # MIDI speichern
-     song = stream.Score()
-     song.insert(0, midi_stream1)
-     song.insert(0, midi_stream2)
-     song.write("midi", fp=output_file)
+    def create_midi_from_notes(self, output_file="output.mid"):
+        midi_stream1 = stream.Part()  # Melodie
+        midi_stream2 = stream.Part()  # Beat
 
+        # Tempo und Instrumente hinzufügen
+        tempo_bpm = tempo.MetronomeMark(number=self.bpm)
+        midi_stream1.append(tempo_bpm)
+        midi_stream2.append(tempo_bpm)
 
+        midi_stream1.append(instrument.Piano())
+        midi_stream2.append(instrument.Percussion())
 
+        for element in self.generated_notes:
+            # Pause generieren
+            if element["pause"] > 0:
+                rest = note.Rest(quarterLength=element["pause"])
+                midi_stream2.append(rest)
+                continue
+
+            # Akkorde
+            if isinstance(element["pitch"], str) and ('.' in element["pitch"] or element["pitch"].isdigit()):
+                chord_notes = [note.Note(int(n)) for n in element["pitch"].split('.')]
+                new_chord = chord.Chord(chord_notes)
+                new_chord.quarterLength = element["duration"]
+                midi_stream1.append(new_chord)
+            else:  # Einzelnote
+                new_note = note.Note(element["pitch"])
+                new_note.quarterLength = element["duration"]
+                if element["duration"] < 0.5:
+                    midi_stream2.append(new_note)
+                else:
+                    midi_stream1.append(new_note)
+
+        # MIDI speichern
+        song = stream.Score()
+        song.insert(0, midi_stream1)
+        song.insert(0, midi_stream2)
+        song.write("midi", fp=output_file)

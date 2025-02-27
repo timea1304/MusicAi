@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 
 # Laden des trainierten Modells und der Noten
-model = tf.keras.models.load_model("hardstyle_model2.keras")
+model = tf.keras.models.load_model("hsdemo_model2.keras")
 
 # Startsequenz laden und vorbereiten
 with open("notes.pkl", "rb") as file:  # Noten werden hier gespeichert, wenn ein Training des modells statt findet

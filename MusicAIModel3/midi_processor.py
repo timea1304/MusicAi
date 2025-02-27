@@ -52,7 +52,6 @@ class MidiProcessor:
     
     def process_midi(self):
         sequences =[]
-          
         labels = {"pitch_output": [], "duration_output": [], "pause_output": []}
         
         if not self.notes:
@@ -65,15 +64,21 @@ class MidiProcessor:
         print(f"Erwartete Sequenzlänge: {self.sequence_length}")
         print(f"Berechneter Bereich: {len(self.notes) - self.sequence_length}")
 
+        pitch_values = [note["pitch"][0] if isinstance(note["pitch"], list) else note["pitch"] for note in self.notes]
+        unique_pitches = sorted(set(pitch_values))
+        pitch_to_idx = {pitch: idx for idx, pitch in enumerate(unique_pitches)}
+
         for i in range(len(self.notes)- self.sequence_length):
             sequence = self.notes[i:i + self.sequence_length]
-            formatted_seq = [[n["pitch"][0], n["duration"], n["pause"]] for n in sequence]
+            formatted_seq = [[pitch_to_idx[note["pitch"][0]] if isinstance(note["pitch"], list) 
+                              else pitch_to_idx[note["pitch"]], note["duration"], note["pause"]] for note in sequence]
             sequences.append(formatted_seq)
 
-
-
             next_note = self.notes[i + self.sequence_length]
-            labels["pitch_output"].append(next_note["pitch"][0] if isinstance(next_note["pitch"], list) else next_note["pitch"])
+           # unique_pitches = sorted(set(pitch_values))
+            #pitch_to_idx = {pitch: idx for idx, pitch in enumerate(unique_pitches)}
+            labels["pitch_output"].append(pitch_to_idx[next_note["pitch"][0]]
+                                           if isinstance(next_note["pitch"], list) else pitch_to_idx[next_note["pitch"]])
             labels["duration_output"].append(next_note["duration"])
             labels["pause_output"].append(next_note["pause"])
             #formatted_seq = []
@@ -107,15 +112,8 @@ class MidiProcessor:
             #pause_labels.append(pause_df[i + self.sequence_length])"""
         print("Max Pitch Output:", max(labels["pitch_output"]))
         print("Min Pitch Output:", min(labels["pitch_output"]))
+
         X = np.array(sequences, dtype= np.float32).reshape(len(sequences), self.sequence_length, 3)
-       
-        n_classes = self.n_vocab  # Anzahl der verschiedenen Noten
-        min_pitch = min(labels["pitch_output"])  # Kleinster Pitch-Wert
-
-        # Normiere die Pitch-Werte auf den Bereich [0, n_classes-1]
-        labels["pitch_output"] = [(pitch - min_pitch) % n_classes for pitch in labels["pitch_output"]]
-
-
         y = {
             "pitch_output": np.array(labels["pitch_output"], dtype=np.int32),
             "duration_output": np.array(labels["duration_output"], dtype=np.float32),
@@ -126,6 +124,9 @@ class MidiProcessor:
         print(f"Pitch_output Shape: {y['pitch_output'].shape}")
         print(f"Duration_output Shape: {y['duration_output'].shape}")
         print(f"Pause_output Shape: {y['pause_output'].shape}")
+        print("Unique Pitch:", unique_pitches)
+        print("Pitch to index:", pitch_to_idx)
+        print("Pitch output:", labels["pitch_output"])
         return X, y
     
     

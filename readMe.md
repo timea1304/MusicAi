@@ -1,20 +1,7 @@
-<p>Die classiefier.py und die generate_music funktioniert soweit,
-ich bin gerade dabei es noch Objektorientiert umschreiben:
-main.py
-model.py
-music_generator.py
-midi_processor.py
 
-diese Funktionieren aber noch nicht richtig zusammen.</p>
+Link zur genaueren Erklärung von Ki und wie man es Programmiert plus wichtige Begriffe, sowie Projekt aufbau und meine eigenen Schritte: <a>https://www.canva.com/design/DAGex_fBT9w/8k8WplEH6gl6nlZP-XqwTA/edit?utm_content=DAGex_fBT9w&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton</a> 
 
-<p> "Sequence length bestimmt wie viele Informationen das Modell aus der Vergangenheit behalten kann.
-Eine längere Sequenzlänge bedeutet, dass das Modell längerfristige Abhängigkeiten erfassen und komplexere Muster erlernen kann.
-Jedoch erhöht es auch den Rechenaufwand. Eine kürzere Sequenzlänge bedeutet, dass das Model schneller Trainiert werden kann,
-jedoch reduziert es auch die Menge an Kontext und die Ausdruckskraft des Modells."
-- https://www.linkedin.com/advice/3/what-optimal-sequence-length-rnn-skills-machine-learning-nu4gc 
-Es handelt sich um die länge des Kontexts die in Betracht gezogen werden, wärend eines Trainings</p>
-
-Nach einem Durchgang mit vielen Durcheinander Gemischten Midi files ist mir aufgefallen das wohl akkorde mehr aufgenommen wurden und mehr eine Art durchgehender Rhytmus vorhanden ist, jedoch fehlt mir eine einheitliche Musikrichtung, dementsprechend, ist das nächste Ziel doch eher einen Interpreten, oder eine Musik richtung zu generieren.
+Nach einem Durchgang mit vielen Durcheinander Gemischten Midi files ist mir aufgefallen das wohl Akkorde mehr aufgenommen wurden und mehr eine Art durchgehender Rhytmus vorhanden ist, jedoch fehlt mir eine einheitliche Musikrichtung, dementsprechend, ist das nächste Ziel doch eher einen Interpreten, oder eine Musik richtung zu generieren.
 Außerdem, muss ich die Lieder rausfiltern, die nur den Bass eines Liedes oder rein die Rythmic und nicht die Melodie darstellen.
 
 Nach Löschen des ersten Models soll erstellt werden:
@@ -44,7 +31,6 @@ https://developers.google.com/machine-learning/crash-course?hl=de <br>
 https://keras.io/guides/sequential_model/ <br>
 https://developers.google.com/machine-learning/intro-to-ml/supervised?hl=de <br>
 https://www.rileynwong.com/blog/2019/2/25/generating-music-with-an-lstm-neural-network <br>
-https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5 <br>
 https://github.com/cobanov/python-yaml-guide <br>
 https://www.ionos.de/digitalguide/websites/web-entwicklung/python-string-to-list/ <br>
 https://docs.python.org/3/library/ast.html <br>

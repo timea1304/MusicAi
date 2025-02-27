@@ -31,7 +31,7 @@ class AIModel:
         model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
             loss={
-                "pitch_output": "sparse_categorical_crossentropy",
+                "pitch_output": "categorical_crossentropy",
                 "duration_output": "mse",
                 "pause_output": "mse"
             },

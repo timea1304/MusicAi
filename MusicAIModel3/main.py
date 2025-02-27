@@ -1,4 +1,3 @@
-import argparse
 import yaml
 from model import AIModel
 from helper_class import HelperClass 
@@ -80,14 +79,18 @@ aiModel.train(
     batch_size= config['training']['batch_size']
 )
 
+# Falls ein trainiertes Modell geladen werden soll:
+# ai_model.model = AIModel.load_model(config['model']['load_path'])
+
 music_generator = MusicGenerator(
     sequence_length = config['training']['sequence_length'],
     generated_notes_count = config['training']['generated_notes_count'],
     model_path = config['model']['model_path'],
     bpm = config['training']['bpm']
 )
+music_generator.load_notes()
+music_generator.generate_notes()
+music_generator.create_midi_from_notes()
 
-# Falls ein trainiertes Modell geladen werden soll:
-# ai_model.model = AIModel.load_model(config['model']['load_path'])
 
 
