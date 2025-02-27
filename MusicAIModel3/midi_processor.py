@@ -52,7 +52,11 @@ class MidiProcessor:
     
     def process_midi(self):
         sequences =[]
-        labels = {"pitch_output": [], "duration_output": [], "pause_output": []}
+        labels = {
+            "pitch_output": [],
+            "duration_output": [],
+            "pause_output": []
+            }
         
         if not self.notes:
             raise ValueError("Fehler: `self.notes` ist leer. Überprüfe `load_data()`.")

@@ -53,7 +53,7 @@ class HelperClass:
 
         return all_notes"""
     
-    def save_midi_file(self, notes, filename):
+    """def save_midi_file(self, notes, filename):
         midi = MidiFile()
         track = MidiTrack()
         midi.tracks.append(track)
@@ -67,4 +67,4 @@ class HelperClass:
             track.append(Message('note_off', note=pitch, velocity=0, time=pause))
             time = 0
 
-        midi.save(filename)
+        midi.save(filename)"""
